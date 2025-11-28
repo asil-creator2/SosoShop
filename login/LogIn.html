@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SosoShop LogIn</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="loader " id="loader">
+        <div class="justify-content-center jimu-primary-loading"></div>
+    </div>
+    <div class="card">
+        <h2>Welcome Back</h2>
+        <div class="input-box">
+        <label>Email</label>
+        <input id="email" type="email" placeholder="Enter your email" />
+        </div>
+        <div class="input-box">
+        <label>Password</label>
+        <input id="password" type="password" placeholder="Enter your password" />
+        </div>
+        <button id="btn" class="btn">Sign In</button>
+
+
+        <div class="divider"><span>OR</span></div>
+
+        <div id="g_id_onload"
+            data-client_id="669986094613-lvjsde09o1tgcg7ceqb179n0dfq9uncr.apps.googleusercontent.com"
+            data-context="signin"
+            data-ux_mode="popup"
+            data-callback="loginCallBack"
+            data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin"
+            data-type="standard"
+            data-shape="pill"
+            data-theme="outline"
+            data-text="signin_with"
+            data-size="large"
+            data-logo_alignment="left"
+            data-width="50px">
+        </div>
+        <div class="links">
+        <a href="#">Forgot password?</a>
+        <br />
+        <a href ="../signUp/signUp.html">Create a new account</a>
+        </div>
+
+
+        </div>
+
+
+    </div>
+<script src="https://accounts.google.com/gsi/client" async></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

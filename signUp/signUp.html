@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SosoShop SignUp</title>
+    <link rel="stylesheet" href="styleSignUp.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+<body>
+
+
+<div class="container">
+<div class="card" id="card">
+<h2>Create New Account</h2>
+
+
+<form>
+<div class="input-group">
+<label>Full Name</label>
+<input id= 'name' type="text" placeholder="Enter your full name" required />
+</div>
+
+
+<div class="input-group">
+<label>Email Address</label>
+<input id="emailS" type="email" placeholder="Enter your email" required />
+</div>
+
+
+<div class="input-group">
+<label>Password</label>
+<input id = 'password' type="password" placeholder="Create a password" required />
+</div>
+
+
+<button class="create-btn" id= 'create-btn' type="button">Create Account</button>
+</form>
+
+
+<div class="divider"><span>OR</span></div>
+
+
+<!-- Google Button -->
+        <div id="g_id_onload"
+            data-client_id="669986094613-lvjsde09o1tgcg7ceqb179n0dfq9uncr.apps.googleusercontent.com"
+            data-context="signin"
+            data-ux_mode="popup"
+            data-callback="signUpCallBack"
+            data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin"
+            data-type="standard"
+            data-shape="pill"
+            data-theme="outline"
+            data-text="signin_with"
+            data-size="large"
+            data-logo_alignment="left"
+            data-width="50px">
+        </div>
+    <div class="links">
+        <a href ="../login/LogIn.html">Already have an account</a>
+    </div>
+<script src="https://accounts.google.com/gsi/client" async></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script  src="signUp.js"></script>
+</body>
+</html>

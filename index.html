@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SosoShop</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+</head>
+<body class="dark">
+    <!-- navbar -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <!-- Logo -->
+        <a href="#" class="logo">Soso<span>Shop</span></a>
+
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+          <li><a id = 'home' href="#">Home</a></li>
+          <li><a href="#">Products</a></li>
+          <li><a id = 'category' href="#">Categories</a></li>
+          <li><a href="#">Deals</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search products or Categories..."
+          />
+          <i class="fa-solid fa-xmark i" id="x"></i>
+          <button id="search-btn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Icons -->
+        <div class="nav-icons">
+          <div class="icon" id="user">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
+              />
+            </svg>
+          </div>
+          <div class="icon" id="cartIcon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+              />
+            </svg>
+            <span class="cart-count" id="cartCount">0</span>
+          </div>
+          <button id="signup-btn" class="signup-btn">Sign Up</button>
+          <label class="switch">
+            <input checked="true" id="checkbox" type="checkbox" />
+            <span class="slider">
+              <div class="star star_1"></div>
+              <div class="star star_2"></div>
+              <div class="star star_3"></div>
+              <svg viewBox="0 0 16 16" class="cloud_1 cloud">
+                <path
+                  transform="matrix(.77976 0 0 .78395-299.99-418.63)"
+                  fill="#fff"
+                  d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"
+                ></path>
+              </svg>
+            </span>
+          </label>
+        </div>
+      </div>
+    </nav>
+
+    <div class="loader " id="loader">
+        <div class="justify-content-center jimu-primary-loading"></div>
+    </div>
+  <select id="categories" class="styled-select">
+      <option value="all">Category</option>
+      <option value="beauty">beauty</option>
+      <option value="fragrances">fragrances</option>
+      <option value="furniture">furniture</option>
+      <option value="groceries">groceries</option>
+      <option value="home-decoration">home-decoration</option>
+      <option value="kitchen-accessories">kitchen-accessories</option>
+      <option value="laptops">laptops</option>
+      <option value="mens-shirts">mens-shirts</option>
+      <option value="mens-shoes">mens-shoes</option>
+      <option value="mens-watches">mens-watches</option>
+      <option value="mobile-accessories">mobile-accessories</option>
+      <option value="motorcycle">motorcycle</option>
+      <option value="skin-care">skin-care</option>
+      <option value="smartphones">smartphones</option>
+      <option value="sports-accessories">sports-accessories</option>
+      <option value="sunglasses">sunglasses</option>
+      <option value="tablets">tablets</option>
+      <option value="tops">tops</option>
+      <option value="vehicle">vehicle</option>
+      <option value="womens-bags">womens-bags</option>
+      <option value="womens-dresses">womens-dresses</option>
+      <option value="womens-jewellery">womens-jewellery</option>
+      <option value="womens-shoes">womens-shoes</option>
+      <option value="womens-watches">womens-watches</option>
+    </select>
+    <div class="main-container">
+        <div id="products-container"></div>
+    </div>
+    <div class="cart" id="cartContainer"></div>
+    <div class="main-userPage" id="main-userPage">
+          <div id="userPage" class="userPage"></div>
+    </div>
+    
+    <script src="main.js"></script>
+</body>
+</html>
