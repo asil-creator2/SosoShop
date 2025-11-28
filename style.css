@@ -629,3 +629,12 @@ body {
 .switch input:checked ~ .slider .cloud {
   opacity: 1;
 }
+
+.userPage{
+  opacity: 0;
+  display: none;
+  transform: translate(30% , 0%);
+}
+body{
+  overflow-x: hidden;
+}

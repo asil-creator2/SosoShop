@@ -177,6 +177,7 @@ function userPage() {
         `;
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('currentUser');
+            localStorage.removeItem('cart')
             location.reload(); // Refresh to reset state
         }); 
     });
@@ -306,6 +307,7 @@ function attachCartEvents() {
                 if (product) {
                     cartMake(product);
                 }
+                updateCartCount()
             });
         });
     });
