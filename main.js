@@ -8,6 +8,7 @@ let switchTheme = document.getElementById("checkbox")
 let cartIcon = document.getElementById('cartIcon')
 let cartCount = document.getElementById('cartCount')
 let cartContainer = document.getElementById('cartContainer')
+let mainUserPage = document.getElementById('userPage');
 
 // local storage
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -151,7 +152,6 @@ function clear(){
 
 function userPage() {
     const userH = document.getElementById('user');
-    const mainUserPage = document.getElementById('userPage');
 
     userH.innerHTML = `<i class="fa-solid fa-user"></i> ${user.name}`;
 
@@ -332,6 +332,8 @@ home.addEventListener('click' , () => {
     productsContainer.style.display = 'grid'; // or 'flex', depending on your CSS
     
     categoryFilter.style.opacity = 1;
+    mainUserPage.style.opacity = 0;
+    mainUserPage.style.display = 'none';
     
     // Check if products are already loaded so we don't fetch again unnecessarily
     if(productsContainer.innerHTML === "") {
