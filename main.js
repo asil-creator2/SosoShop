@@ -161,6 +161,8 @@ function userPage() {
 
         mainUserPage.style.opacity = 1;
         mainUserPage.style.display = 'block';
+        productsContainer.innerHTML = ''
+        cartContainer.innerHTML = ''
 
         mainUserPage.innerHTML = `
             <div class="profile-card">
@@ -250,7 +252,9 @@ function displayCart() {
     
     // Shows the cart and enables grid layout
     cartContainer.style.display = 'grid'; // <-- IMPORTANT FIX
-    cartContainer.innerHTML = '';
+    cartContainer.innerHTML = '';   
+    mainUserPage.style.display = 'none'
+    mainUserPage.style.opacity = 0
 
     // ... (rest of the logic for handling empty cart and item display)
     if(cart.length === 0) {
