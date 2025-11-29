@@ -11,8 +11,10 @@ let cartContainer = document.getElementById('cartContainer')
 let mainUserPage = document.getElementById('userPage');
 
 // local storage
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let cart = []
 let user = JSON.parse(localStorage.getItem('currentUser'));
+cart = loadCart();
+
 
 let productsPromise = new Promise((resolve, reject) => {
     activeLoader();
@@ -179,11 +181,20 @@ function userPage() {
         `;
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('currentUser');
-            localStorage.removeItem('cart')
             location.reload(); // Refresh to reset state
         }); 
     });
 }
+function loadCart() {
+    if (!user || !user.email) return [];
+    return JSON.parse(localStorage.getItem(`cart_${user.email}`)) || [];
+}
+
+function saveCart() {
+    if (!user || !user.email) return;
+    localStorage.setItem(`cart_${user.email}`, JSON.stringify(cart));
+}
+
 
 function getUser() {
     const signUp = document.getElementById('signup-btn');
@@ -202,14 +213,10 @@ function getUser() {
 function cartMake(product) {
     // 1. Update the Data
     cart.push(product);
-    localStorage.setItem('cart', JSON.stringify(cart));
-
+    saveCart()
     // 2. Update the Counter UI
     cartCount.innerText = cart.length;
 
-    // 3. Optional: Give user feedback (alert or console log)
-    // We REMOVED the lines that clear the screen. 
-    // The user stays on the shop page.
     console.log("Added to cart:", product.title);
     alert("Item added to cart!"); 
 }
@@ -282,8 +289,7 @@ function attachRemoveEvents() {
             }
 
             // Update storage
-            localStorage.setItem('cart', JSON.stringify(cart));
-
+            saveCart()
             // Update counter
             cartCount.innerText = cart.length;
 
