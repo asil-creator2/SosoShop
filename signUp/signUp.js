@@ -9,14 +9,14 @@ const btnS = document.getElementById('create-btn');
 btnS.addEventListener('click', () => {
 
     if (!emailS.value || !passwordS.value || !nameS.value) {
-        alert("Please fill all fields!");
+        Swal.fire("Please fill all fields!");
         return;
     }
 
     const userExists = users.some(u => u.email === emailS.value);
 
     if (userExists) {
-        alert("Email already exists");
+        Swal.fire('Email Already Exists')        
         return;
     }
 

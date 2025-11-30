@@ -7,7 +7,7 @@ let password = document.getElementById('password');
 logIn.addEventListener('click', () => {
 
     if (email.value === '' || password.value === '') {
-        alert('Please fill all fields');
+        Swal.fire('Please fill all fields');
         return;
     }
 
@@ -15,7 +15,7 @@ logIn.addEventListener('click', () => {
 
     // Google account
     if (userExists && userExists.password === null) {
-        alert("This email is registered with Google. Please use Google Sign-In.");
+        Swal.fire("This email is registered with Google. Please use Google Sign-In.");
         return;
     }
 
@@ -26,7 +26,7 @@ logIn.addEventListener('click', () => {
         return;
     }
 
-    alert("Email or Password incorrect. Please try again.");
+    Swal.fire("Email or Password incorrect. Please try again.");
 });
 
 

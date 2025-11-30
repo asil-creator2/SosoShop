@@ -2,15 +2,16 @@
    LOADER (Unchanged)
 --------------------------------------- */
 .loader {
-  position: fixed; /* Changed to fixed to cover the entire viewport */
-  top: 0;
+  position: relative;
+  top: 70px;
   bottom: 0;
   left: 0;
   right: 0;
   opacity: 0;
   visibility: hidden;
   z-index: 9999; /* Ensure it's on top of everything */
-  background: var(--bg); /* Use the body background for seamless transition */
+  margin-bottom: 200px;
+
 }
 
 .jimu-primary-loading:before,
@@ -85,6 +86,8 @@
 .loader.active {
   opacity: 1;
   visibility: visible;
+  transform: none;
+  z-index: 9999;
 }
 
 /* ---------------------------------------
@@ -140,6 +143,7 @@ body {
   padding: 20px;
   transition: 0.35s ease;
   padding-top: 80px; /* FIX: Added padding to prevent Navbar overlap */
+  height: auto;
 }
 
 .main-container {
@@ -637,4 +641,245 @@ body {
 }
 body{
   overflow-x: hidden;
+}
+
+body {font-family: Verdana, sans-serif;}
+.mySlides {display: none;}
+img {vertical-align: middle;}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 700px;
+  position: relative;
+  margin: auto;
+}
+
+/* The dots/bullets/indicators */     
+.dot {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.dot.active {
+  background-color: #717171;
+  width: 20px;
+  height: 20px;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .text {font-size: 11px}
+}        
+/* ---------------------- FOOTER ---------------------- */
+
+.footer {
+  background: var(--footer-bg, #f7f7f7);
+  padding: 35px 0 20px;     /* Not too big */
+  border-top: 1px solid rgba(0,0,0,0.08);
+  transition: background 0.3s, color 0.3s;
+}
+
+.footer-container {
+  width: 92%;
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/* LOGO */
+.footer-logo {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  color: var(--footer-title, #222);
+}
+
+/* NORMAL TEXT */
+.footer-text {
+  font-size: 14px;
+  color: var(--footer-text, #555);
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* LINKS COLUMN */
+.footer-col h3 {
+  font-size: 17px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: var(--footer-title, #222);
+}
+
+.footer-col ul li {
+  list-style: none;
+  margin: 7px 0;
+}
+
+.footer-col ul li a {
+  text-decoration: none;
+  color: var(--footer-link, #555);
+  font-size: 14px;
+  transition: 0.25s;
+}
+
+.footer-col ul li a:hover {
+  color: var(--footer-hover, #111);
+  padding-left: 4px;
+}
+
+/* SOCIAL ICONS */
+.footer-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--social-bg, #eaeaea);
+  color: var(--footer-title, #222);
+  margin-right: 10px;
+  font-size: 18px;
+  transition: 0.25s ease;
+}
+
+.footer-social a:hover {
+  background: var(--footer-hover-bg, #000);
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+/* NEWSLETTER */
+.footer-newsletter {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.footer-newsletter input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.15);
+  outline: none;
+  font-size: 14px;
+  background: var(--newsletter-bg, #fff);
+  color: var(--footer-title, #222);
+}
+
+.footer-newsletter button {
+  padding: 10px 14px;
+  background: var(--footer-button, #222);
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.25s;
+}
+.footer-newsletter button:hover {
+  background: var(--footer-hover-bg, #000);
+}
+
+/* COPYRIGHT */
+.footer-bottom {
+  text-align: center;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  font-size: 14px;
+  color: var(--footer-text, #666);
+}
+
+/* ---------------------- DARK MODE ---------------------- */
+
+body.dark {
+  --footer-bg: #111;
+  --footer-title: #f5f5f5;
+  --footer-text: #c7c7c7;
+  --footer-link: #bbbbbb;
+  --footer-hover: #ffffff;
+  --social-bg: #222;
+  --newsletter-bg: #1c1c1c;
+  --footer-button: #ffffff;
+  --footer-hover-bg: #d5d5d5;
+}
+
+body.dark .footer {
+  border-top-color: rgba(255,255,255,0.08);
+}
+
+body.dark .footer-bottom {
+  border-top-color: rgba(255,255,255,0.05);
+}
+
+/* Responsive Fine Tuning */
+@media (max-width: 500px) {
+  .footer-logo {
+    font-size: 24px;
+  }
+  .footer-container {
+    gap: 25px;
+  }
+}
+
+
+body.light .footer-newsletter button {
+  background-color: white;
+  color: #000;
+}
+body.dark .footer-newsletter button{
+  background-color: black;
+  color: white;
+}
+.shop{
+  color: orangered;
+}
+
+.quantity-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: #2575fc;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.qty-btn:hover {
+  background: #1b5ed8;
+}
+
+.qty-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
 }

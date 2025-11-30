@@ -12,8 +12,9 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css">
 </head>
-<body class="dark">
+<body class="light">
     <!-- navbar -->
     <nav class="navbar">
       <div class="navbar-container">
@@ -102,9 +103,29 @@
       </div>
     </nav>
 
-    <div class="loader " id="loader">
-        <div class="justify-content-center jimu-primary-loading"></div>
+
+  <div class="slideshow-container" id="slideshow-container">
+
+    <div class="mySlides fade">
+      <img src="./image/img1.png" style="width:100%">
     </div>
+
+    <div class="mySlides fade">
+      <img src="./image/img2.png" style="width:100%">
+    </div>
+
+    <div class="mySlides fade">
+      <img src="./image/img3.png" style="width:100%">
+    </div>
+
+  </div>
+  <br>
+  <div style="text-align:center" id="dots">
+    <span class="dot"></span> 
+    <span class="dot"></span> 
+    <span class="dot"></span> 
+  </div>
+
   <select id="categories" class="styled-select">
       <option value="all">Category</option>
       <option value="beauty">beauty</option>
@@ -139,7 +160,59 @@
     <div class="main-userPage" id="main-userPage">
           <div id="userPage" class="userPage"></div>
     </div>
-    
+      <div class="loader " id="loader">
+        <div class="justify-content-center jimu-primary-loading"></div>
+    </div>
+    <footer class="footer">
+  <div class="footer-container">
+
+    <!-- Column 1: Logo + About -->
+    <div class="footer-col">
+      <h2 class="footer-logo">Soso<span class="shop">Shop</span></h2>
+      <p class="footer-text">
+        Your favorite place for quality products with fast delivery and best prices.
+      </p>
+
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-tiktok"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- Column 2: Quick Links -->
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Categories</a></li>
+        <li><a href="#">My Account</a></li>
+      </ul>
+    </div>
+
+    <!-- Column 3: Contact -->
+    <div class="footer-col">
+      <h3>Contact Us</h3>
+      <p>Email: ic.asil2011@gmail.com</p>
+      <p>Phone: +971 55 123 4567</p>
+      <p>Address: Sharjah, UAE</p>
+
+      <form class="footer-newsletter">
+        <input type="email" placeholder="Enter your email">
+        <button type="submit">Join</button>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 Soso Shop — All Rights Reserved.
+  </div>
+  </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.all.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
