@@ -1241,7 +1241,7 @@ body {
 /* Nav links */
 .nav-links {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
   list-style: none;
@@ -1400,7 +1400,6 @@ body {
     flex-direction: row;
     gap: 15px;
     margin-bottom: 5px;
-    display: flex;
   }
 
   #products-container {
