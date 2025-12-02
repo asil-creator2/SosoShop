@@ -10,7 +10,7 @@
   opacity: 0;
   visibility: hidden;
   z-index: 9999; /* Ensure it's on top of everything */
-  margin-bottom: 300px;
+  margin-bottom: 0px;
 
 }
 
@@ -1453,3 +1453,9 @@ body.dark{
   background-color: #000;
 }
 
+body.dark .navbar{
+  background-color: #000;
+}
+#productsContainer{
+  margin-top: 0;
+}
