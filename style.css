@@ -3,14 +3,14 @@
 --------------------------------------- */
 .loader {
   position: relative;
-  top: 70px;
-  bottom: 0;
+  top: 0px;
+  bottom: 0px;
   left: 0;
   right: 0;
   opacity: 0;
   visibility: hidden;
   z-index: 9999; /* Ensure it's on top of everything */
-  margin-bottom: 200px;
+  margin-bottom: 300px;
 
 }
 
@@ -214,7 +214,6 @@ body {
   border: none;
   outline: none;
   color: var(--text);
-  width: 220px;
 }
 
 .search-bar button {
@@ -459,57 +458,63 @@ body {
   grid-column: 1 / -1; /* Forces it to span all grid columns */
 }
 
-/* ---------------------------------------
-   USER PAGE (Profile Card)
---------------------------------------- */
-#userPage {
-  /* Using display: flex for centering when shown, hidden by default */
-  display: none; 
+/* ------------------------ USER PAGE (Responsive) ------------------------ */
+.userPage {
+  display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 80px); /* Full height minus Navbar padding */
+  min-height: calc(100vh - 80px); /* full viewport minus navbar */
   padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+.userPage.active {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Profile Card */
 .profile-card {
-  width: 600px;
-  /* FIX: Ensure background/text contrast uses variables */
-  background: var(--card-bg); 
+  width: 90%;           /* Responsive width */
+  max-width: 600px;     /* Limit maximum width for larger screens */
+  padding: 30px 20px;   /* Smaller padding for mobile */
+  background: var(--card-bg);
   color: var(--text);
-  
-  padding: 40px 30px;
   border-radius: 20px;
   box-shadow: 0 10px 30px var(--shadow);
   text-align: center;
   animation: fadeIn 0.9s ease;
+  box-sizing: border-box;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
+/* Avatar */
 .avatar {
   width: 120px;
   height: 120px;
-  border-radius: 100%;
-  border: 4px solid var(--text); /* FIX: Border color adapts to theme */
+  border-radius: 50%;
+  border: 4px solid var(--text);
   margin-bottom: 20px;
+  object-fit: cover;
 }
 
+/* User Info */
 .email {
   opacity: 0.9;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  word-wrap: break-word; /* prevent overflow on small screens */
 }
 
 .buttons {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   gap: 10px;
+  flex-wrap: wrap;       /* Wrap buttons on small screens */
 }
 
 .btn {
-  width: 100%;
+  flex: 1 1 45%;        /* Grow/shrink and occupy 45% on mobile */
   padding: 12px;
   border: none;
   border-radius: 10px;
@@ -536,9 +541,39 @@ body {
   background: #d93434;
 }
 
-.styled-select{
-  transform: translate(70%,10%);
+/* ------------------------ MEDIA QUERIES ------------------------ */
+@media (max-width: 768px) {
+  .profile-card {
+    padding: 25px 15px;
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .btn {
+    flex: 1 1 100%;  /* Stack buttons vertically on smaller screens */
+  }
 }
+
+@media (max-width: 480px) {
+  .profile-card {
+    width: 95%;
+    padding: 20px 10px;
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .buttons {
+    gap: 8px;
+  }
+}
+
+
 /* ---------------------------------------
    THEME SWITCH STYLES (Unchanged)
 --------------------------------------- */
@@ -634,11 +669,7 @@ body {
   opacity: 1;
 }
 
-.userPage{
-  opacity: 0;
-  display: none;
-  transform: translate(30% , 0%);
-}
+
 body{
   overflow-x: hidden;
 }
@@ -882,4 +913,309 @@ body.dark .footer-newsletter button{
   font-size: 18px;
   font-weight: 600;
   color: #333;
+}
+
+    body {
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #444;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+.product-description{
+  color: gray;
+
+}
+
+#cartContainer{
+  height: 75vh;
+  margin: 40px;
+  overflow-y:scroll;
+}
+
+body.dark .h2{
+  color: white;
+}
+body.light .h2 {
+  color: #000;
+}
+.h2{
+  text-align: center;
+  font-size: large;
+}
+
+.summary-total{
+  border: 3px solid black;
+  height: 30px;
+  width: auto;
+  max-width: fit-content;
+  min-width: 300px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5px;
+  color: black;
+  margin-left: 20px;
+  margin-top: 40px;
+
+}
+body.dark .summary-total{
+  color: white;
+  border-color: white;
+}
+.mainCartContainer .payment {
+  padding : 5px;
+  width : 180px;
+  margin: auto;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  font-size: medium;
+  border-radius: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: background 0.5s ease; /* <-- smooth transition */
+
+}
+
+.mainCartContainer .payment:hover {
+  background: linear-gradient(165deg, #2575fc,#6a11cb );
+  cursor: pointer;
+}
+
+.mainCartContainer{
+  display: none;
+}
+
+.box{
+  border: 3px solid black;
+  border-radius: 10px;
+  margin-left: 40px;
+  margin-right: 40px;
+  padding: 40px;
+  width: fit-content;
+}
+body.dark .box{
+  border: 3px solid white;
+  color: white;
+}
+.parentBox{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+body.dark .sum{
+    color: white;
+}
+.shopCart{
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 50px;
+  border-radius: 10px;
+  font-size: x-large;
+}
+
+/* Hide scrollbar for Webkit browsers */
+#cartContainer::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for Firefox */
+#cartContainer {
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Optional: still allow scrolling */
+#cartContainer {
+    overflow-y: auto;
+}
+/* Base invoice styling (common to both themes) */
+.billContainer {
+    font-family: Arial;
+    max-width: 500px;
+    margin: 20px auto;
+}
+.invoice {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+}
+.invoice h1 {
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: large;
+}
+.invoice h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.details .from,
+.details .to {
+    width: 45%;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+.total td {
+    font-weight: bold;
+}
+.footer {
+    text-align: center;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+/* LIGHT THEME */
+body.light .invoice {
+    background: #f9f9f9;
+    color: #000;
+    border: 2px solid #333;
+}
+body.light table th {
+    background: #eee;
+    color: #000;
+}
+body.light table td {
+    border: 1px solid #555;
+    color: #000;
+}
+body.light .total td {
+    background: #ddd;
+}
+
+/* DARK THEME */
+body.dark .invoice {
+    background: #2b2b2b;
+    color: #fff;
+    border: 2px solid #555;
+}
+body.dark table th {
+    background: #444;
+    color: #fff;
+}
+body.dark table td {
+    border: 1px solid #777;
+    color: #fff;
+}
+body.dark .total td {
+    background: #555;
+}
+.filters{
+  display: flex;
+  margin-top: 30px;
+}
+
+.clear{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-left: 125px;
+}
+
+/* Container that fills the screen minus navbar */
+.main-userPage {
+  display: flex;
+  justify-content: center; /* horizontal centering */
+  align-items: center;     /* vertical centering */
+  width: 100%;
+  min-height: calc(100vh - 80px); /* full viewport height minus navbar */
+  padding: 20px;
+}
+
+/* Inner wrapper (optional, but keeps content flexible) */
+.userPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Profile card itself */
+.profile-card {
+  width: 95%;           /* almost full width on small screens */
+  max-width: 600px;     /* limit width on large screens */
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px var(--shadow);
+  text-align: center;
+  background: var(--card-bg);
+  animation: fadeIn 0.9s ease;
+}
+
+/* Avatar */
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid var(--text);
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+/* Buttons stack vertically on small screens */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn {
+  flex: 1 1 100%;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.footer-col{
+  color: gray;
 }

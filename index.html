@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SosoShop</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="logo" >
+    <link rel="icon" type="image/png" href="image/logo.png">
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -12,6 +15,8 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css">
 </head>
 <body class="light">
@@ -36,9 +41,8 @@
           <input
             type="text"
             id="searchInput"
-            placeholder="Search products or Categories..."
+            placeholder="Search products..."
           />
-          <i class="fa-solid fa-xmark i" id="x"></i>
           <button id="search-btn">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +87,7 @@
             </svg>
             <span class="cart-count" id="cartCount">0</span>
           </div>
-          <button id="signup-btn" class="signup-btn">Sign Up</button>
+          <button id="signup-btn" class="signup-btn ">Sign Up</button>
           <label class="switch">
             <input checked="true" id="checkbox" type="checkbox" />
             <span class="slider">
@@ -104,59 +108,76 @@
     </nav>
 
 
-  <div class="slideshow-container" id="slideshow-container">
-
-    <div class="mySlides fade">
-      <img src="./image/img1.png" style="width:100%">
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="./sliderImages/image1.png" ></div>
+      <div class="swiper-slide"><img src="./sliderImages/image2.png" ></div>
+      <div class="swiper-slide"><img src="./sliderImages/image3.png" ></div>
+      <div class="swiper-slide"><img src="./sliderImages/image4.png" ></div>
+      <div class="swiper-slide"><img src="./sliderImages/image5.png" ></div>
     </div>
 
-    <div class="mySlides fade">
-      <img src="./image/img2.png" style="width:100%">
-    </div>
-
-    <div class="mySlides fade">
-      <img src="./image/img3.png" style="width:100%">
-    </div>
-
+    <div class="swiper-pagination"></div>
   </div>
-  <br>
-  <div style="text-align:center" id="dots">
-    <span class="dot"></span> 
-    <span class="dot"></span> 
-    <span class="dot"></span> 
-  </div>
+  <div class="filters" id="filters">
 
-  <select id="categories" class="styled-select">
-      <option value="all">Category</option>
-      <option value="beauty">beauty</option>
-      <option value="fragrances">fragrances</option>
-      <option value="furniture">furniture</option>
-      <option value="groceries">groceries</option>
-      <option value="home-decoration">home-decoration</option>
-      <option value="kitchen-accessories">kitchen-accessories</option>
-      <option value="laptops">laptops</option>
-      <option value="mens-shirts">mens-shirts</option>
-      <option value="mens-shoes">mens-shoes</option>
-      <option value="mens-watches">mens-watches</option>
-      <option value="mobile-accessories">mobile-accessories</option>
-      <option value="motorcycle">motorcycle</option>
-      <option value="skin-care">skin-care</option>
-      <option value="smartphones">smartphones</option>
-      <option value="sports-accessories">sports-accessories</option>
-      <option value="sunglasses">sunglasses</option>
-      <option value="tablets">tablets</option>
-      <option value="tops">tops</option>
-      <option value="vehicle">vehicle</option>
-      <option value="womens-bags">womens-bags</option>
-      <option value="womens-dresses">womens-dresses</option>
-      <option value="womens-jewellery">womens-jewellery</option>
-      <option value="womens-shoes">womens-shoes</option>
-      <option value="womens-watches">womens-watches</option>
-    </select>
+        <select id="categories" class="styled-select">
+            <option value="all">Category</option>
+            <option value="beauty">beauty</option>
+            <option value="fragrances">fragrances</option>
+            <option value="furniture">furniture</option>
+            <option value="groceries">groceries</option>
+            <option value="home-decoration">home-decoration</option>
+            <option value="kitchen-accessories">kitchen-accessories</option>
+            <option value="laptops">laptops</option>
+            <option value="mens-shirts">mens-shirts</option>
+            <option value="mens-shoes">mens-shoes</option>
+            <option value="mens-watches">mens-watches</option>
+            <option value="mobile-accessories">mobile-accessories</option>
+            <option value="motorcycle">motorcycle</option>
+            <option value="skin-care">skin-care</option>
+            <option value="smartphones">smartphones</option>
+            <option value="sports-accessories">sports-accessories</option>
+            <option value="sunglasses">sunglasses</option>
+            <option value="tablets">tablets</option>
+            <option value="tops">tops</option>
+            <option value="vehicle">vehicle</option>
+            <option value="womens-bags">womens-bags</option>
+            <option value="womens-dresses">womens-dresses</option>
+            <option value="womens-jewellery">womens-jewellery</option>
+            <option value="womens-shoes">womens-shoes</option>
+            <option value="womens-watches">womens-watches</option>
+          </select>
+          <select id="sortFilter" class="filter-select styled-select">
+            <option value="featured">Sort by: Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating-desc">Rating: High to Low</option>
+            <option value="rating-asc">Rating: Low to High</option>
+          </select>
+  </div>
     <div class="main-container">
         <div id="products-container"></div>
     </div>
-    <div class="cart" id="cartContainer"></div>
+    <div class="mainCartContainer" id="mainCartContainer">
+      <h2 class="h2 shopCart" id="shopCart">Your Shoping Cart</h2>
+      <div class="cart" id="cartContainer"></div>
+
+      <div class="parentBox">
+        <div>
+        <div class="clear">
+          <button class = "clear-btn payment" id = 'clear' onclick = "cartFunctions.clearCart()">Clear Cart</button>
+        </div>
+        <div class="box" id="box">
+          <h2 class="h2 sum">Order Summary</h2>
+          <div id="summary-total" class="summary-row summary-total">Total Price : </div>
+
+          <button class="payment" id="payment">Proceed To Bill</button>
+        </div>
+
+        </div>
+      </div>
+    </div>
     <div class="main-userPage" id="main-userPage">
           <div id="userPage" class="userPage"></div>
     </div>
@@ -211,6 +232,7 @@
     © 2025 Soso Shop — All Rights Reserved.
   </div>
   </footer>
+      <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.all.min.js"></script>
     <script src="main.js"></script>

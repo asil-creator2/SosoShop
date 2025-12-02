@@ -5,18 +5,13 @@ let searchBtn = document.getElementById('search-btn')
 let categoryFilter = document.getElementById('categories')
 let home = document.getElementById('home')
 let switchTheme = document.getElementById("checkbox")
-let cartIcon = document.getElementById('cartIcon')
-let cartCount = document.getElementById('cartCount')
-let cartContainer = document.getElementById('cartContainer')
-let mainUserPage = document.getElementById('userPage');
-let slideContainer = document.getElementById('slideshow-container')
-let dotsContainer = document.getElementById('dots')
-// local storage
-let cart = []
-let user = JSON.parse(localStorage.getItem('currentUser'));
-cart = loadCart();
+let sorting = document.getElementById('sortFilter')
+let filters = document.getElementById('filters')
 
+// ------------user 
+let user = JSON.parse(localStorage.getItem('currentUser')) || false;
 
+// ---------------getProducts----------------------
 let productsPromise = new Promise((resolve, reject) => {
     activeLoader();
 
@@ -32,14 +27,27 @@ let productsPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 disableLoader();
                 reject(error);
+                // handle the error
+                Swal.fire({
+                    title : 'An Error accurred',
+                    text : `An Error has accured Please Try Again`,
+                    icon : 'info',
+                    showCancelButton : true,
+                    cancelButtonText : `No`,
+                    confirmButtonText : 'Try Again'
+                }).then(result => {
+                    if(result.isConfirmed){
+                        window.reload
+                    }else{
+                        return;
+                    }
+                })
             }, 1300);
         });
-});
+})
+// ------------------------------------------------
+// -------------------loading---------------------
 
-// update the cart number in the navbar
-function updateCartCount() {
-    cartCount.innerText = cart.length;
-}
 // active the loader when getting products
 function activeLoader() {
     loading.classList.add('active');
@@ -48,6 +56,19 @@ function activeLoader() {
 function disableLoader() {
     loading.classList.remove('active');
 }
+// -------------------------------------------
+// ------------------show or hide containers---------------
+function hideSections(...sections) {
+    sections.forEach(sec => sec.style.display = 'none');
+}
+
+function showSection(section, display = 'block') {
+    section.style.display = display;
+    section.style.opacity=1
+}
+// -----------------------------------------
+
+// --------------------getStars----------------------
 // get the number of stars each product has
 function generateStarRating(rate) {
     let stars = "";
@@ -61,9 +82,10 @@ function generateStarRating(rate) {
     if (halfStar) {
         stars += '<i class="fas fa-star-half-alt"></i>';
     }
-
     return stars;
 }
+//------------------------------------------------
+// ---------------------products-----------------------
 // make the card for the main container
 function makeCard(container,product) {
     const card = document.createElement("div");
@@ -85,17 +107,11 @@ function makeCard(container,product) {
                 <div class="stars">${generateStarRating(product.rating)}</div>
                 <div class="rating-count">(${product.reviews?.length || 0})</div>
             </div>
-            <div class="quantity-box">
-                <button class="qty-btn minus">−</button>
-                <span class="qty-value">1</span>
-                <button class="qty-btn plus">+</button>
-            </div>
-
 
             <div class="product-price">$${product.price}</div>
 
             <div class="product-actions">
-                <button class="add-to-cart" data-id="${product.id}">
+                <button class="add-to-cart" onclick = "cartFunctions.addToCart(${product.id})">
                     <i class="fas fa-shopping-cart"></i> Add to Cart
                 </button>
                 <button class="wishlist-btn"><i class="far fa-heart"></i></button>
@@ -111,23 +127,18 @@ function combineCards(products,key) {
         products.then(productsDiv => {
             productsContainer.innerHTML = "";
             productsDiv.forEach(product => makeCard(productsContainer,product));
-            attachCartEvents();
-            attachQuantityEvents(1)
         });
     }
     else{
         productsContainer.innerHTML = "";
         products.forEach(product => makeCard(productsContainer,product));
-        attachCartEvents();
-        attachQuantityEvents(1)
     }
 }
+
+// ----------------------filtering----------------------------
 // handles the search 
 function filtering() {
     productsPromise.then(products => {
-
-        clear();
-
         let searchValue = search.value.toLowerCase();
 
         let filteredProducts = products.filter(product =>
@@ -142,27 +153,35 @@ function filtering() {
             filteredProducts = filteredProducts.filter(p => p.category === selectedCategory);
         }
 
+        // Sorting
+        if (sorting.value !== 'featured') {
+            if (sorting.value === 'price-asc') {
+                filteredProducts.sort((a, b) => a.price - b.price);
+            } else if (sorting.value === 'price-desc') {
+                filteredProducts.sort((a, b) => b.price - a.price);
+            } else if (sorting.value === 'rating-asc') {
+                filteredProducts.sort((a, b) => a.rating - b.rating);
+            } else if (sorting.value === 'rating-desc') {
+                filteredProducts.sort((a, b) => b.rating - a.rating);
+            }
+        }
+
         productsContainer.innerHTML = '';
 
         if (filteredProducts.length > 0) {
             combineCards(filteredProducts, "sub");
-        } 
-        else {
-            productsContainer.innerHTML = `
-                <h2 class="noProducts">No products found</h2>
-            `;
+        } else {
+            productsContainer.innerHTML = `<h2 class="noProducts">No products found</h2>`;
         }
-
     });
 }
-// clears the search input
-function clear(){
-    let clearBtn = document.getElementById('x')
-    clearBtn.onclick = () => {
-        search.value = ''
-        filtering()
-    }
-}
+
+// ----------------------userPage--------------------------
+//elements
+let mainUserPage = document.getElementById('userPage');
+
+
+
 // the user page that shows when the user click his name
 function userPage() {
     const userH = document.getElementById('user');
@@ -170,16 +189,11 @@ function userPage() {
     userH.innerHTML = `<i class="fa-solid fa-user"></i> ${user.name}`;
 
     userH.addEventListener('click', () => {
+        hideSections(filters)
         productsContainer.innerHTML = '';
-        categoryFilter.style.opacity = 0;
-
-        mainUserPage.style.opacity = 1;
-        mainUserPage.style.display = 'block';
+        showSection(mainUserPage)
         productsContainer.innerHTML = ''
         cartContainer.innerHTML = ''
-        slideContainer.style.display = 'none'
-        dotsContainer.style.display = 'none'
-
         mainUserPage.innerHTML = `
             <div class="profile-card">
                 <img id="userImg" class="avatar" src="./image/image.png" alt="User Image">
@@ -199,16 +213,6 @@ function userPage() {
         }); 
     });
 }
-// load the cart when the website is loaded
-function loadCart() {
-    if (!user || !user.email) return [];
-    return JSON.parse(localStorage.getItem(`cart_${user.email}`)) || [];
-}
-// save the cart in local storege
-function saveCart() {
-    if (!user || !user.email) return;
-    localStorage.setItem(`cart_${user.email}`, JSON.stringify(cart));
-}
 // get the current user
 function getUser() {
     const signUp = document.getElementById('signup-btn');
@@ -223,24 +227,198 @@ function getUser() {
         });
     }
 }
-// add the product in the cart
-function cartMake(product) {
-    // 1. Update the Data
-    cart.push(product);
-    saveCart()
-    // 2. Update the Counter UI
-    cartCount.innerText = cart.length;
 
-    console.log("Added to cart:", product.title);
-    Swal.fire({
-    title: 'Success!',
-    text: 'Item was succesfully added to cart',
-    icon: 'success'
-    })
+
+// display all cart products when clicking cart
+
+
+// ----------------start slider-----------------------
+// swiper
+// ال slider بتاع الاعلانات
+var swiper = new Swiper(".mySwiper", {
+        spaceBetween: 30,
+        centeredSlides: true,
+        autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+    },
+        pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+    },
+
+});
+// end swiper
+// --------------------end slider----------------------
+// --------------------cart--------------------------
+// cart Elements
+let mainCartContainer = document.getElementById('mainCartContainer')
+let cart = []
+cart = loadCart();
+let cartIcon = document.getElementById('cartIcon')
+let cartCount = document.getElementById('cartCount')
+let cartContainer = document.getElementById('cartContainer')
+let box = document.getElementById('box')
+let clear = document.getElementById('clear')
+
+// cart Functions
+// load the cart when the website is loaded
+function loadCart() {
+    if (!user || !user.email) return [];
+    return JSON.parse(localStorage.getItem(`cart_${user.email}`)) || [];
 }
-// make the card for the products in the cart
+// update the cart number in the navbar
+function updateCartCount() {
+    cartCount.innerText = cart.length;
+}
+let cartFunctions ={
+    totalValue : 0 ,
+    total : document.getElementById('summary-total'),
+
+    decrease : function (id) {
+        const product = cart.find(product => product.id === id)
+        if (product.quantity != 1){
+            product.quantity --
+        }
+        else{
+            return;
+        }
+        saveCart()
+        displayCart()
+        this.getTotal()
+    },
+    increase : function(id) {
+        const product = cart.find(product => product.id === id)
+        product.quantity ++
+        saveCart()
+        displayCart()
+        this.getTotal()
+    },
+    addToCart : async function (id) {
+        const products = await productsPromise;
+        const product = products.find(p => p.id === id);
+
+        const productExists = cart.find(item => item.id === id);
+
+        if (productExists) {
+            Swal.fire({
+                title: 'Product Exists',
+                text: `(${productExists.title}) Already Exists`,
+                icon: 'info',
+                timer: 1500,
+                showConfirmButton: false
+            });
+            return;
+        }
+
+        cart.push({
+            ...product,
+            quantity: 1
+        });
+
+        saveCart();
+        updateCartCount();
+
+
+        Swal.fire({
+            title: 'Product Added',
+            text: `${product.title}\nWas Added Successfully!`,
+            icon: 'success'
+        });
+        this.getTotal()
+    },
+    remove : function (id) {
+        const index = cart.findIndex(product => product.id == id)
+        Swal.fire({
+            title: "Do You want to remove this Product ? ",
+            text: `${cart[index].title}\nWill Be removed from Cart !`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                saveCart();
+                cart.splice(index, 1);
+                Swal.fire({
+                    title: "Product Removed!",
+                    text:`${cart[index].title}\nWas Removed from the Cart!`,
+                    icon: "success",
+                    confirmButtonText: "ok",
+                });
+                displayCart()
+                updateCartCount()
+                this.getTotal()
+            }
+});
+
+    },
+    updateTotal : function () {
+        this.total.innerHTML = `Total Price : $${this.totalValue.toFixed(2)}`;
+    },
+    clearCart : function () {
+        cart = []
+        localStorage.removeItem(`cart_${user.email}`)
+        Swal.fire({
+            title: "Do You want to clear you Cart  ",
+            text: `(Note : this action can't be undone !) ?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                saveCart();
+                cart = []
+                localStorage.removeItem(`cart_${user.email}`)
+                Swal.fire({
+                    title: "The Cart Was Cleared",
+                    text:`The Cart is Now Empty`,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                });
+                displayCart()
+                updateCartCount()
+            }
+        })
+    },
+    getTotal : function () {
+        this.totalValue = 0;
+        this.totalValue = cart.reduce((sum, p) => sum + (p.price * (p.quantity || 1)), 0);
+        this.updateTotal();
+    },
+
+}
+function displayCart() {
+    // Hides the 
+    hideSections(filters)
+    hideSections(productsContainer,mainUserPage)
+    showSection(mainCartContainer)
+    showSection(cartContainer,'grid')
+    showSection(clear)
+    // Shows the cart and enables grid layout
+    cartContainer.innerHTML = '';   
+    cartContainer.classList.remove('billContainer')
+
+
+    // ... (rest of the logic for handling empty cart and item display)
+    if(cart.length === 0) {
+        box.style.display = 'none'
+        clear.style.display = 'none'
+        cartContainer.innerHTML = '<h2 class="case">Cart is Empty</h2>';
+        return;
+    } else {
+        box.style.display = 'block'
+        clear.style.display = 'block'
+
+        cart.forEach(product => {
+            cartContainer.innerHTML += makeCartCard(product);
+        });
+
+    }
+    cartFunctions.getTotal()
+}
 function makeCartCard(product) {
-    // Note the added <div class="product-card"> wrapper
     return `
         <div class="product-card"> 
             <div class="product-image">
@@ -259,253 +437,161 @@ function makeCartCard(product) {
                     <div class="rating-count">(${product.reviews?.length || 0})</div>
                 </div>
                 <div class="quantity-box">
-                    <button class="qty-btn minus">−</button>
-                    <span class="qty-value">${product.quantity}</span>
-                    <button class="qty-btn plus">+</button>
+                    <button class="qty-btn minus" onclick = "cartFunctions.decrease(${product.id})">−</button>
+                    <span class="qty-value">${product.quantity || 1}</span>
+                    <button class="qty-btn plus" onclick = "cartFunctions.increase(${product.id})">+</button>
                 </div>
 
                 <div class="product-price">$${product.price}</div>
 
                 <div class="product-actions">
-                    <button class="remove-from-cart" data-id="${product.id}">
-                        <i class="fas fa-trash"></i> Remove
+                    <button class="remove-from-cart" onclick = "cartFunctions.remove(${product.id})">
+                        <i class="fas fa-trash"></i>
                     </button>
                 </div>
             </div> 
         </div> `;
 }
+// save the cart in local storege
+function saveCart() {
+    if (!user || !user.email) return;
+    localStorage.setItem(`cart_${user.email}`, JSON.stringify(cart));
+}
+// ----------------------bill-----------------------
+let makeBill  = {
+    button : document.getElementById('payment'),
+    click: function () {
+        let title = document.getElementById('shopCart')
+        cartContainer.innerHTML = ''
+        productsContainer.innerHTML = ''
+        mainUserPage.style.display = 'none'
+        cartContainer.classList.add('billContainer')
+        cartContainer.style.overflow = 'visible'
+        clear.style.display = 'none'
 
-function attachQuantityEvents() {
-    document.querySelectorAll('.quantity-box').forEach(box => {
-        let plus = box.querySelector('.plus');
-        let minus = box.querySelector('.minus');
-        let value = box.querySelector('.qty-value');
+        box.style.opacity = 0
+        title.textContent = 'Your Bill'
+        // Styled invoice HTML
+        cartContainer.innerHTML = `
+            <div class="invoice">
+                <h2>Invoice</h2>
+                <h1>Company : SosoShop</h1>
+                <div class="details">
+                    <div class="from">
+                        <strong>From:</strong><br>
+                        Company Address<br>
+                        Email: ic.asil2011@gmail.com<br>
+                        Phone: 123-456-7890
+                    </div>
+                    <div class="to">
+                        <strong>To:</strong><br>
+                        Customer Name : ${user.name}<br>
+                        Email: ${user.email}
+                    </div>
+                </div>
 
-        let card = box.closest('.product-card');
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr class="total">
+                            <td colspan="4">Grand Total</td>
+                            <td>$${cartFunctions.totalValue.toFixed(2)}</td>
+                        </tr>
+                    </tfoot>
+                </table>
 
-        // حالة الصفحة الرئيسية (لا يوجد cart array)
-        if (!card.dataset.id) {
-            let count = parseInt(value.textContent);
+                <div class="footer">
+                    Thank you for choosing our Shop!
+                </div>
+            </div>
+            <br>
+            <br>
+            <button class = "back payment" id = 'back' onclick => <i class="fa-solid fa-arrow-left"></i> Back To Shop</button>
+        `
 
-            plus.addEventListener('click', () => {
-                count++;
-                value.textContent = count;
-            });
+        let tableBody = document.querySelector('#table tbody')
 
-            minus.addEventListener('click', () => {
-                if (count > 1) {
-                    count--;
-                    value.textContent = count;
-                }
-            });
+        cart.forEach((product, index) => {
+            tableBody.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${product.title}</td>
+                    <td>${product.quantity}</td>
+                    <td>$${product.price.toFixed(2)}</td>
+                    <td>$${(product.price * product.quantity).toFixed(2)}</td>
+                </tr>
+            `
+        })
+        let back = document.getElementById('back')
+        back.addEventListener('click', () => {
+            // Hide Cart, Show Shop
+            hideSections(cartContainer,mainCartContainer,mainUserPage)
+            showSection(productsContainer,'grid')
+            
+            if(productsContainer.innerHTML === "") {
+                combineCards(productsPromise, 'main');
+            }})
 
-            return;
-        }
-
-        // -------------------------
-        // حالة السلة (cart items)
-        // -------------------------
-
-        let id = Number(card.dataset.id);
-
-        let productInCart = cart.find(item => item.id === id);
-
-        // تأكد أن له quantity
-        if (!productInCart.quantity) {productInCart.quantity = 1};
-
-        value.textContent = productInCart.quantity;
-
-        plus.addEventListener('click', () => {
-            productInCart.quantity++;
-            value.textContent = productInCart.quantity;
-            saveCart();
-        });
-
-        minus.addEventListener('click', () => {
-            if (productInCart.quantity > 1) {
-                productInCart.quantity--;
-                value.textContent = productInCart.quantity;
-                saveCart();
-            }
-        });
-    });
+    },
 }
 
-// display all cart products when clicking cart
-function displayCart() {
-    // Hides the shop
-    productsContainer.style.display = 'none';
-    categoryFilter.style.opacity = 0;
-    
-    // Shows the cart and enables grid layout
-    cartContainer.style.display = 'grid';
-    cartContainer.innerHTML = '';   
-    mainUserPage.style.display = 'none'
-    mainUserPage.style.opacity = 0
-    slideContainer.style.display = 'none'
-    dotsContainer.style.display = 'none'
-
-    // ... (rest of the logic for handling empty cart and item display)
-    if(cart.length === 0) {
-        cartContainer.innerHTML = '<h2 class="case">Cart is Empty</h2>';
-    } else {
-        cart.forEach(product => {
-            cartContainer.innerHTML += makeCartCard(product);
-
-        });
-        attachRemoveEvents();
-        attachQuantityEvents()
-    }
-}
-// attach these events to the products in the cart
-function attachRemoveEvents() {
-    let removeBtns = document.querySelectorAll('.remove-from-cart');
-
-    removeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = btn.dataset.id;
-
-            const index = cart.findIndex(item => item.id == id);
-
-            // If found, remove ONLY that one item (splice takes index and quantity)
-            if (index > -1) {
-                cart.splice(index, 1);
-            }
-
-            // Update storage
-            saveCart()
-            // Update counter
-            cartCount.innerText = cart.length;
-
-            if (cart.length === 0) {
-
-                Swal.fire({
-                    title: 'Removed',
-                    text: 'Your cart is now empty',
-                    icon: 'info',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-
-                cartContainer.innerHTML = '<h2 class="case">Cart is Empty</h2>';
-                return;             } else {
-                // Refresh cart visual to show item is gone
-                displayCart(); 
- 
-                Swal.fire({
-                    title: 'Removed',
-                    text: 'item was removed from your cart',
-                    icon: 'info',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-            }
-        });
-    });
-}
-// attach these events for all the products
-function attachCartEvents() {
-    let addBtns = document.querySelectorAll('.add-to-cart');
-
-    addBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const card = btn.closest('.product-card')
-            const qty = parseInt(card.querySelector('.qty-value').textContent); // get selected quantity
-
-
-            productsPromise.then(products => {
-                const id =Number(btn.dataset.id);
-                const product = products.find(p => p.id == id);
-                const  selectedProduct = {...product}
-                const productExists = cart.find(item => Number(item.id) === id);
-
-                selectedProduct.quantity = qty
-                if (product && !productExists) {
-                    cartMake(selectedProduct);
-                }
-                else{
-                    productExists.quantity = productExists.quantity + qty
-                    saveCart()
-                }
-                updateCartCount()
-            });
-        });
-    });
+// -----------------Theme Toggle -----------------------
+// Apply saved theme on page load
+const savedTheme = localStorage.getItem(`theme${user.email}`)
+if (savedTheme) {
+    document.body.className = savedTheme;
+    switchTheme.checked = savedTheme === 'dark';
 }
 
-
-// ----------------start slider-----------------------
-let slideIndex = -1; // مهم جدًا
-showSlide();
-
-function showSlide() {
-    let i;
-    let dots = document.getElementsByClassName('dot');
-    let slides = document.getElementsByClassName('mySlides');
-
-    // Hide all slides
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = 'none';
-    }
-
-    // Move to next slide
-    slideIndex++;
-
-    // If end → restart
-    if (slideIndex >= slides.length) {
-        slideIndex = 0;
-    }
-
-    // Remove active from all dots
-    for (i = 0; i < dots.length; i++) {
-        dots[i].classList.remove('active');
-    }
-
-    // Show current slide + activate dot
-    slides[slideIndex].style.display = 'block';
-    dots[slideIndex].classList.add('active');
-
-    // Loop
-    setTimeout(showSlide, 2000);
-}
-// --------------------end slider----------------------
-
-
-
-combineCards(productsPromise,'main')
-
+// Toggle theme on switch change
 switchTheme.addEventListener("change", () => {
-    document.body.classList.toggle("dark");
-});
-search.addEventListener('input', filtering)
-
-cartIcon.addEventListener('click', displayCart);
-
-
-home.addEventListener('click' , () => {
-    // Hide Cart, Show Shop
-    cartContainer.style.display = 'none';
-    productsContainer.style.display = 'grid'; // or 'flex', depending on your CSS
-    
-    categoryFilter.style.opacity = 1;
-    mainUserPage.style.opacity = 0;
-    mainUserPage.style.display = 'none';
-    slideContainer.style.display = 'block'
-    slideContainer.style.opacity = 1
-    dotsContainer.style.display = 'block'
-    dotsContainer.style.opacity = 1
-
-
-    
-    // Check if products are already loaded so we don't fetch again unnecessarily
-    if(productsContainer.innerHTML === "") {
-        combineCards(productsPromise, 'main');
+    if (document.body.classList.contains("dark")) {
+        document.body.classList.remove("dark");
+        localStorage.setItem(`theme${user.email}`, 'light');
+    } else {
+        document.body.classList.add("dark");
+        localStorage.setItem(`theme${user.email}`, 'dark');
     }
 });
-searchBtn.addEventListener('click' , filtering)
+//------------------------------------------------------
 
-categoryFilter.addEventListener('change' , filtering)
-updateCartCount();
-getUser()
-clear()
+function runWebsite() {
 
+    combineCards(productsPromise,'main')
+
+    search.addEventListener('input', filtering)
+
+    cartIcon.addEventListener('click', displayCart);
+
+    makeBill.button.addEventListener('click', makeBill.click)
+
+    home.addEventListener('click' , () => {
+        // Hide Cart, Show Shop
+        hideSections(cartContainer,mainCartContainer,mainUserPage)
+        showSection(productsContainer,'grid')
+        showSection(filters)
+        if(productsContainer.innerHTML === "") {
+            combineCards(productsPromise, 'main');
+        }
+    });
+
+    searchBtn.addEventListener('click' , filtering)
+
+    sorting.addEventListener('change', filtering);
+
+    categoryFilter.addEventListener('change' , filtering)
+    updateCartCount();
+    getUser()
+}
+
+runWebsite()
