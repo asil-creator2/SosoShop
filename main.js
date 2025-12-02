@@ -396,6 +396,7 @@ function displayCart() {
     showSection(mainCartContainer)
     showSection(cartContainer,'grid')
     showSection(clear)
+    showSection(box)
     // Shows the cart and enables grid layout
     cartContainer.innerHTML = '';   
     cartContainer.classList.remove('billContainer')
