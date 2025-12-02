@@ -1400,6 +1400,7 @@ body {
     flex-direction: row;
     gap: 15px;
     margin-bottom: 5px;
+    display: flex;
   }
 
   #products-container {
