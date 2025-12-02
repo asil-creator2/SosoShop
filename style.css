@@ -1276,8 +1276,8 @@ body {
   cursor: pointer;
 }
 
-.navbar{
-  margin-bottom: 30px;
+.styled-select{
+  margin-top: 40px;
 }
 
 /* Icons */
