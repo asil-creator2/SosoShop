@@ -1462,4 +1462,12 @@ body.dark .navbar{
 }
 #productsContainer{
   margin-top: 0;
+
+}
+.cart{
+  overflow-y: scroll;
+}
+
+.box{
+  margin-top: 40px;
 }

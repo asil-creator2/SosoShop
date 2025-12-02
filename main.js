@@ -7,6 +7,7 @@ let home = document.getElementById('home')
 let switchTheme = document.getElementById("checkbox")
 let sorting = document.getElementById('sortFilter')
 let filters = document.getElementById('filters')
+let title = document.getElementById('shopCart')
 
 // ------------user 
 let user = JSON.parse(localStorage.getItem('currentUser')) || false;
@@ -397,7 +398,7 @@ function displayCart() {
     showSection(cartContainer,'grid')
     showSection(clear)
     showSection(box)
-    // Shows the cart and enables grid layout
+    title.textContent = 'You Shopping Cart'
     cartContainer.innerHTML = '';   
     cartContainer.classList.remove('billContainer')
 
@@ -459,10 +460,10 @@ function saveCart() {
     localStorage.setItem(`cart_${user.email}`, JSON.stringify(cart));
 }
 // ----------------------bill-----------------------
+
 let makeBill  = {
     button : document.getElementById('payment'),
     click: function () {
-        let title = document.getElementById('shopCart')
         cartContainer.innerHTML = ''
         productsContainer.innerHTML = ''
         mainUserPage.style.display = 'none'
