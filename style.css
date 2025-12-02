@@ -1276,6 +1276,10 @@ body {
   cursor: pointer;
 }
 
+.navbar{
+  margin-bottom: 30px;
+}
+
 /* Icons */
 .nav-icons {
   display: flex;
